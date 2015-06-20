@@ -1,0 +1,64 @@
+Samuel Villarreal
+CS152 Compilers W15
+
+Grammer used to write bison
+// non terminals in camel case//
+// Program is the start
+
+
+Program
+
+	Program -> program identifier ; Block endprogram
+
+Block
+	Block -> Declarations beginprogram Statements
+	Declarations -> Declaration ; | Declaration , Declarations  
+	Statements -> Statement ; | Statement ; Statements
+
+Declaration 
+	Declaration -> Identifiers : integer | Identifiers : array [ number ]
+			of integers 
+	Identifiers -> identifier | identifier , Identifiers
+
+//might look at Split2 / 3
+Statement
+	Statement -> Statement1 | Statement2 | Statement3 | Statement4 | Statement5 | 				Statement6 | Statement7
+	Statement1 -> Var := Expression | Var := Bool_Exp ? Expression :
+			Expression 
+	Statement2 -> if Bool_Exp then Statements endif | if Bool_Exp then Statements 				Split2
+	Split2 -> New_elseif | else Statements endif
+	New_elseif -> elseif Bool_Exp Statements endif | elseif Bool_Exp Statements 				Split2
+	Statement3 -> while Bool_Exp beginloop Statements endloop
+	Statement4 -> do beginloop Statements endloop while Bool_Exp
+	Statement5 -> read Vars
+	Vars -> Var | Var , Vars
+	Statement6 -> write Vars
+	Statement7 -> break | continue | exit
+
+Bool_Exp
+	Bool_Exp -> Relation_And_Exp | Relation_And_Exp or Bool_Exp
+
+Relation_And_Exp
+	Relation_And_Exp -> Relation_Exp | Relation_Exp and Relation_And_Exp
+
+Relation_Exp
+	Relation_Exp-> not Re1 | Re1
+	Re1 -> Expression Comp Expression | true | false | ( Bool_Exp ) 
+
+Comp
+	Comp -> == | <> | < | > | <= | >=
+
+Expression
+	Expression -> Multiplicative_Exp | Multiplicative_Exp + Expression				 | Multiplicative_Exp - Expression 
+
+Multiplicative_Exp
+	Multiplicative_Exp-> Term | Term * Multiplicative_Exp 
+				| Term / Multiplicative_Exp 
+				| Term % Multiplicative_Exp
+
+Term 
+	Term -> - T1 | T1
+	T1 -> Var | number | ( Expression )
+
+Var 
+	Var-> identifier | identifier [ Expression ] 
